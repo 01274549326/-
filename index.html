@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هشام أحمد | ZA3BOLAT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #05040a;
+            --text-main: #f0f0f0;
+            --text-muted: #a8a0c2;
+            --accent-magenta: #d11cd5;
+            --accent-cyan: #4df8ff;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        
+        html { scroll-behavior: smooth; }
+        
+        body { background-color: var(--bg-color); color: var(--text-main); line-height: 1.8; overflow-x: hidden; }
+
+        /* الهيدر والشريط الفرعي (مفيش تغيير فيهم) */
+        header {
+            background: linear-gradient(90deg, #110d24, #1a1333, #110d24);
+            padding: 20px;
+            border-bottom: 2px solid var(--accent-magenta);
+            box-shadow: 0 4px 20px rgba(209, 28, 213, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            position: relative; 
+            min-height: 125px;
+        }
+
+        .header-logo {
+            width: 125px; 
+            height: 125px; 
+            object-fit: contain;
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .page-links {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 20px;
+        }
+        .page-links a {
+            color: var(--text-main);
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: 0.3s;
+            padding: 5px 15px;
+            border-radius: 8px;
+        }
+        .page-links a.active {
+            color: var(--accent-cyan);
+            background: rgba(77, 248, 255, 0.05);
+            border: 1px solid rgba(77, 248, 255, 0.3);
+        }
+        .page-links a:hover { color: var(--accent-cyan); }
+
+        .header-text-container { text-align: center; }
+        .header-title {
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--accent-cyan);
+        }
+        .header-subtitle { font-size: 14px; color: var(--text-muted); }
+
+        .sub-bar {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(209, 28, 213, 0.3);
+        }
+        .sub-bar a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 15px;
+            transition: 0.3s;
+        }
+        .sub-bar a:hover {
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(77, 248, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        /* حاوية الأقسام الجديدة (التصميم الضخم) */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+        }
+        
+        .section-wrapper, .social-section {
+            scroll-margin-top: 240px; 
+        }
+
+        /* تصميم السكشن الطويل */
+        .info-card {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            min-height: 600px; /* طول السكشن عشان يدي الإيحاء بالضخامة */
+            padding: 60px;
+            border-radius: 25px;
+            border: 1px solid rgba(209, 28, 213, 0.2);
+            position: relative;
+            background-blend-mode: multiply; /* عشان يدمج اللون مع الصورة */
+            background-attachment: fixed; /* تأثير الـ Parallax وإنت بتنزل */
+            transition: 0.5s;
+            overflow: hidden;
+        }
+        
+        /* عكس ترتيب النص والصورة في السكاشن المعينة */
+        .info-card.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .info-card:hover {
+            box-shadow: 0 15px 40px rgba(77, 248, 255, 0.1);
+            border-color: var(--accent-cyan);
+        }
+
+        .card-text {
+            flex: 1;
+            z-index: 2;
+        }
+        .card-text h2 {
+            font-size: 38px;
+            color: var(--accent-cyan);
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+        .card-text p {
+            font-size: 20px;
+            line-height: 2;
+            color: #fff;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.8);
+        }
+
+        /* الصور الجانبية العضوية (الغير مربعة) */
+        .card-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            z-index: 2;
+        }
+        .card-image img {
+            width: 100%;
+            max-width: 400px;
+            height: 400px;
+            object-fit: cover;
+            /* كود بيعمل شكل غير منتظم بدل المربع */
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; 
+            box-shadow: 0 0 40px rgba(209, 28, 213, 0.3);
+            border: 3px solid rgba(77, 248, 255, 0.5);
+            animation: morph 8s ease-in-out infinite; /* أنيميشن التنفس للصفحة */
+        }
+
+        @keyframes morph {
+            0% { border-radius: 40% 60% 60% 40% / 60% 30% 70% 40%; }
+            50% { border-radius: 60% 40% 30% 70% / 40% 60% 40% 60%; }
+            100% { border-radius: 40% 60% 60% 40% / 60% 30% 70% 40%; }
+        }
+
+        /* خطوط الفصل النيون بين السكاشن */
+        .divider {
+            height: 2px;
+            width: 60%;
+            margin: 0 auto;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan), var(--accent-magenta), transparent);
+            box-shadow: 0 0 15px var(--accent-cyan);
+            opacity: 0.6;
+        }
+
+        /* المهارات */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            width: 100%;
+            z-index: 2;
+        }
+        .skill-item {
+            background: rgba(23, 17, 44, 0.85);
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(77, 248, 255, 0.2);
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .skill-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(209, 28, 213, 0.4);
+        }
+        .skill-item h3 { font-size: 20px; color: var(--accent-magenta); margin-bottom: 10px; }
+        .skill-item p { font-size: 16px; color: var(--text-muted); }
+
+        /* السوشيال وتواصل */
+        .social-section {
+            text-align: center;
+            padding: 80px 20px;
+        }
+        .social-section h2 {
+            font-size: 32px;
+            color: var(--accent-cyan);
+            margin-bottom: 40px;
+        }
+        .email-card { max-width: 500px; margin: 0 auto 50px auto; }
+        .email-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            background: linear-gradient(45deg, var(--accent-magenta), var(--accent-cyan));
+            color: #000 !important;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: 900;
+            transition: 0.4s;
+            box-shadow: 0 10px 25px rgba(209, 28, 213, 0.4);
+            border: none;
+            cursor: pointer;
+            width: 100%;
+        }
+        .email-btn:hover { transform: scale(1.05); box-shadow: 0 15px 30px rgba(77, 248, 255, 0.6); }
+
+        .social-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .social-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(26, 19, 51, 0.8);
+            color: var(--text-main);
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: 1px solid rgba(209, 28, 213, 0.3);
+            transition: 0.4s;
+        }
+        .social-btn:hover {
+            background: linear-gradient(45deg, var(--accent-magenta), var(--accent-cyan));
+            color: #000;
+            box-shadow: 0 10px 20px rgba(77, 248, 255, 0.4);
+            border-color: transparent;
+            transform: translateY(-8px);
+        }
+
+        /* الموبايل */
+        @media (max-width: 900px) {
+            .info-card, .info-card.reverse { flex-direction: column; text-align: center; padding: 40px 20px; }
+            .card-image img { height: 300px; max-width: 300px; }
+            .header-top { flex-direction: column; gap: 20px; }
+            .header-logo, .page-links { position: static; transform: none; }
+            /* ========================= */
+/*        Responsive         */
+/* ========================= */
+
+/* Tablets */
+@media (max-width: 992px) {
+
+    .header-top{
+        flex-direction: column;
+        gap: 15px;
+        padding: 20px 0;
+        min-height: auto;
+    }
+
+    .header-logo,
+    .page-links{
+        position: static;
+        transform: none;
+    }
+
+    .page-links{
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .sub-bar{
+        gap:20px;
+    }
+
+    .channel-section{
+        padding:35px 25px;
+    }
+
+    .section-title{
+        font-size:32px;
+    }
+
+    .video-card{
+        width:100%;
+        max-width:420px;
+    }
+}
+
+
+/* Mobile */
+@media (max-width:768px){
+
+    header{
+        padding:15px;
+    }
+
+    .header-logo{
+        width:90px;
+        height:90px;
+    }
+
+    .header-title{
+        font-size:24px;
+    }
+
+    .header-subtitle{
+        font-size:13px;
+    }
+
+    .page-links{
+        gap:10px;
+    }
+
+    .page-links a{
+        font-size:16px;
+        padding:6px 12px;
+    }
+
+    .sub-bar{
+        gap:15px;
+    }
+
+    .sub-bar a{
+        font-size:14px;
+    }
+
+    .portfolio-container{
+        padding:25px 15px;
+    }
+
+    .animated-logo-container{
+        width:150px;
+        height:150px;
+        margin-bottom:35px;
+    }
+
+    .section-title{
+        font-size:28px;
+        line-height:1.4;
+    }
+
+    .channel-section{
+        padding:25px 18px;
+        border-radius:20px;
+    }
+
+    .channel-info-grid{
+        grid-template-columns:1fr;
+    }
+
+    .info-box{
+        padding:25px;
+    }
+
+    .videos-title{
+        font-size:24px;
+    }
+
+    .video-card{
+        width:100%;
+    }
+
+    .thumbnail-wrapper{
+        height:200px;
+    }
+}
+
+
+/* Small Phones */
+@media (max-width:480px){
+
+    .header-logo{
+        width:75px;
+        height:75px;
+    }
+
+    .header-title{
+        font-size:20px;
+    }
+
+    .header-subtitle{
+        font-size:12px;
+    }
+
+    .page-links{
+        flex-direction:column;
+        gap:8px;
+    }
+
+    .sub-bar{
+        flex-direction:column;
+        gap:10px;
+    }
+
+    .animated-logo-container{
+        width:130px;
+        height:130px;
+    }
+
+    .animated-logo-container video{
+        transform: scale(3.3) translateY(12%) translateX(1%);
+    }
+
+    .section-title{
+        font-size:22px;
+    }
+
+    .videos-title{
+        font-size:20px;
+    }
+
+    .video-info h4{
+        font-size:17px;
+    }
+
+    .video-info p{
+        font-size:14px;
+    }
+
+}
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-top">
+            <img src="images/logo.png" alt="Za3bolat Logo" class="header-logo">
+            <div class="header-text-container">
+                <div class="header-title">ZA3BOLAT</div>
+                <div class="header-subtitle">Gaming Content Creator & Video Editor</div>
+            </div>
+            <div class="page-links">
+                <a href="index.html" class="active">أنا مين؟</a>
+                <a href="portfolio.html">أعمالي</a>
+            </div>
+        </div>
+        
+        <div class="sub-bar">
+            <a href="#about">About Me</a>
+            <a href="#vision">My Vision</a>
+            <a href="#achievements">Achievements</a>
+            <a href="#skills">Skills</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <!-- سكشن أنا هشام (الصورة على الشمال) -->
+        <div id="about" class="section-wrapper">
+            <div class="info-card" style="background: linear-gradient(rgba(13, 10, 27, 0.88), rgba(13, 10, 27, 0.88)), url('https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=2070') center/cover;">
+                <div class="card-text">
+                    <h2>أنا هشام أحمد</h2>
+                    <p>
+                        صانع محتوى، مونتير، ومصمم جرافيك. بدرس في مجال علوم الكمبيوتر، لكن مكاني وشغفي الحقيقي في عالم الـ Gaming. أنا Gamer بشكل عام وبحب ألعاب كتير، ومش مقتصر بس على League of Legends أو Wild Rift. بدمج بين خبرتي الطويلة في اللعب ومهاراتي التقنية عشان أطلع محتوى ممتع، مختلف، ويشد المتابع.
+                    </p>
+                </div>
+                <div class="card-image">
+                    <!-- الصورة الجانبية -->
+                    <img src="G:\work\بورتفوليو\images\hesham-about.png" alt="Hesham Ahmed">
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- سكشن الرؤية (الصورة على اليمين - ضفنا كلاس reverse) -->
+        <div id="vision" class="section-wrapper">
+            <div class="info-card reverse" style="background: linear-gradient(rgba(13, 10, 27, 0.88), rgba(13, 10, 27, 0.88)), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070') center/cover;">
+                <div class="card-text">
+                    <h2>الهدف (My Vision)</h2>
+                    <p>
+                        هدفي أبقى من أقوى صناع المحتوى في مجالات متعددة، وأطور من نفسي باستمرار في مجال البرمجة ودراستي. بسعى دايماً إني أشتغل مع ناس أكتر، أكتسب خبرات قوية توصلني للعالمية، والأهم إني أبني Community ضخم، مترابط، وبيحب المحتوى اللي بقدمه.
+                    </p>
+                </div>
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?q=80&w=1000" alt="My Vision">
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- سكشن الإنجازات (الصورة على الشمال تاني) -->
+        <div id="achievements" class="section-wrapper">
+            <div class="info-card" style="background: linear-gradient(rgba(13, 10, 27, 0.88), rgba(13, 10, 27, 0.88)), url('https://images.unsplash.com/photo-1511512578047-dfb367046420?q=80&w=2071') center/cover;">
+                <div class="card-text">
+                    <h2>أهم الإنجازات</h2>
+                    <p>
+                        حققت نجاحات ممتازة في دراستي الجامعية. على مستوى صناعة المحتوى، اشتغلت مع ستريمرز وصناع محتوى كبار زي "زرعة"، وساهمت في إدارة وتطوير قنوات كتير بمختلف التوجهات (بما فيها قنوات دينية). قدرت أبني Community خاص بيا، ومستوايا في المونتاج وإخراج الفيديوهات بيتطور بسرعة جداً وبينافس مستويات عالية.
+                    </p>
+                </div>
+                <div class="card-image">
+                    <img src="https://images.unsplash.com/photo-1542751110-97427bbecf20?q=80&w=1000" alt="Achievements">
+                </div>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- سكشن المهارات -->
+        <div id="skills" class="section-wrapper">
+            <div class="info-card" style="background: linear-gradient(rgba(13, 10, 27, 0.9), rgba(13, 10, 27, 0.9)), url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070') center/cover; flex-direction: column; justify-content: center;">
+                <h2 style="font-size: 38px; color: var(--accent-cyan); text-shadow: 0 2px 10px rgba(0,0,0,0.8); z-index: 2; margin-bottom: 20px;">مهاراتي (Skills)</h2>
+                <div class="skills-grid">
+                    <div class="skill-item">
+                        <h3>Video Editing</h3>
+                        <p>DaVinci Resolve - Fusion Page</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>Graphic Design</h3>
+                        <p>Thumbnails & Stream Overlays</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>Channel Management</h3>
+                        <p>YouTube SEO & Algorithm</p>
+                    </div>
+                    <div class="skill-item">
+                        <h3>Programming</h3>
+                        <p>Computer Science & Python</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- التواصل -->
+    <div id="contact" class="social-section">
+        <h2>Contact & Socials</h2>
+        
+        <div class="email-card">
+            <button onclick="copyEmail()" class="email-btn" id="emailButton">
+                <i class="fa-solid fa-envelope"></i> hesham123.ha71@gmail.com
+            </button>
+        </div>
+
+        <div class="social-grid">
+            <a href="https://www.youtube.com/@Za3bolatYT" target="_blank" class="social-btn"><i class="fa-brands fa-youtube"></i> YouTube</a>
+            <a href="https://www.instagram.com/za3bolat/?next=%2F" target="_blank" class="social-btn"><i class="fa-brands fa-instagram"></i> Instagram</a>
+            <a href="https://www.tiktok.com/@za3bolat" target="_blank" class="social-btn"><i class="fa-brands fa-tiktok"></i> TikTok</a>
+            <a href="https://www.twitch.tv/za3bolat" target="_blank" class="social-btn"><i class="fa-brands fa-twitch"></i> Twitch</a>
+            <a href="https://discord.com/invite/hqZKPnhQ" target="_blank" class="social-btn"><i class="fa-brands fa-discord"></i> Discord</a>
+            <a href="https://www.facebook.com/profile.php?id=61582335964381" target="_blank" class="social-btn"><i class="fa-brands fa-facebook-f"></i> Facebook</a>
+            <a href="https://kick.com/za3bolat-100" target="_blank" class="social-btn"><i class="fa-solid fa-gamepad"></i> Kick</a>
+        </div>
+    </div>
+
+    <script>
+        function copyEmail() {
+            navigator.clipboard.writeText("hesham123.ha71@gmail.com");
+            const btn = document.getElementById("emailButton");
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-check"></i> تم النسخ بنجاح!';
+            setTimeout(() => { btn.innerHTML = originalText; }, 2000);
+        }
+    </script>
+</body>
+</html>
